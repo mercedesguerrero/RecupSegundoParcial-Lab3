@@ -1,20 +1,16 @@
 var SegundoParcial;
 (function (SegundoParcial) {
-    var clientesList = new Array();
-    var atributos = ['id', 'nombre', 'apellido', 'edad', 'genero'];
-    var divFrm;
-    var frm;
-    var divInfo;
-    var btnCancelar;
+    var empleadosList = new Array();
+    var atributos = ['nombre', 'apellido', 'edad', 'legajo', 'horario'];
     window.onload = function inicializar() {
         setTimeout(function () {
             // var btn= document.getElementById("btnEnviar");
             // btn.onclick= login;
             document.getElementById('loadingDiv').style.display = 'none';
-            var cliente1 = new SegundoParcial.Cliente(1, "Mercedes", "Juarez", 35, SegundoParcial.sexo.femenino);
-            var cliente2 = new SegundoParcial.Cliente(2, "Leandro", "Holmberg", 28, SegundoParcial.sexo.masculino);
-            clientesList.push(cliente1);
-            clientesList.push(cliente2);
+            var empleado1 = new SegundoParcial.Empleado("Mercedes", "Juarez", 35, 1, "9-18");
+            var empleado2 = new SegundoParcial.Empleado("Leandro", "Holmberg", 28, 2, "8-17");
+            empleadosList.push(empleado1);
+            empleadosList.push(empleado2);
             // var btnAlta= 
             document.getElementById('btnAlta').addEventListener('click', crearFormulario);
             document.getElementById('filtro').addEventListener('change', filtrar);
@@ -63,7 +59,7 @@ var SegundoParcial;
     function crearBody(tabla) {
         var tbody = document.createElement('tbody');
         tbody.id = 'bodyTabla';
-        clientesList.forEach(function (cliente) {
+        empleadosList.forEach(function (cliente) {
             var tr = crearFila(cliente);
             tbody.appendChild(tr);
         });
@@ -91,7 +87,7 @@ var SegundoParcial;
             var td = document.createElement('td');
             td.classList.add('col-' + atributo);
             if (atributo == 'genero') {
-                td.appendChild(document.createTextNode(SegundoParcial.sexo[cliente.sexo]));
+                td.appendChild(document.createTextNode(sexo[cliente.sexo]));
             }
             else {
                 td.appendChild(document.createTextNode(cliente[atributo]));
@@ -124,7 +120,7 @@ var SegundoParcial;
             return -1;
         }
         else {
-            return SegundoParcial.sexo[selectedValue];
+            return sexo[selectedValue];
         }
     }
     function filtrar() {
@@ -137,7 +133,7 @@ var SegundoParcial;
         var valorSeleccionado = obtenerValorSelect();
         var listaFiltrada;
         if (valorSeleccionado == -1) {
-            listaFiltrada = clientesList;
+            listaFiltrada = empleadosList;
         }
         else {
             listaFiltrada = obtenerListaFiltradaPorSexo(valorSeleccionado);
@@ -145,7 +141,7 @@ var SegundoParcial;
         return listaFiltrada;
     }
     function obtenerListaFiltradaPorSexo(valorSeleccionado) {
-        var listaFiltrada = clientesList.filter(function (cliente) {
+        var listaFiltrada = empleadosList.filter(function (cliente) {
             if (cliente.sexo === valorSeleccionado) {
                 return true;
             }
@@ -174,7 +170,7 @@ var SegundoParcial;
     SegundoParcial.calcularPromedio = calcularPromedio;
     //Buscar el max id, sumarle 1 y retornarlo
     function devuelveId() {
-        var MaxId = clientesList.reduce(function (previous, current) {
+        var MaxId = empleadosList.reduce(function (previous, current) {
             if (previous < current.id) {
                 return current.id;
             }
@@ -239,11 +235,11 @@ var SegundoParcial;
         var generoSelect = document.createElement('select');
         generoSelect.className = 'inputForm';
         generoSelect.id = 'generoSelect';
-        for (var item in SegundoParcial.sexo) {
+        for (var item in sexo) {
             if (isNaN(Number(item))) {
                 var option = document.createElement('option');
                 option.innerText = item;
-                option.value = SegundoParcial.sexo[item];
+                option.value = sexo[item];
                 generoSelect.appendChild(option);
             }
         }
@@ -304,8 +300,8 @@ var SegundoParcial;
     function altaPersona() {
         var inputs = document.getElementsByClassName('inputForm');
         var id = devuelveId();
-        var nuevaPersona = new SegundoParcial.Cliente(id, inputs[1].value, inputs[2].value, inputs[3].value, parseInt(inputs[4].value));
-        clientesList.push(nuevaPersona);
+        var nuevaPersona = new Cliente(id, inputs[1].value, inputs[2].value, inputs[3].value, parseInt(inputs[4].value));
+        empleadosList.push(nuevaPersona);
         actualizarTabla(nuevaPersona);
         removerObjetos();
     }
@@ -324,9 +320,9 @@ var SegundoParcial;
         }
     }
     function bajaPersona(id) {
-        clientesList.splice(id, 1);
+        empleadosList.splice(id, 1);
         quitarFilas();
-        mostrarTablaFiltrada(clientesList);
+        mostrarTablaFiltrada(empleadosList);
     }
     function modificacionPersona(persona) {
         var turno = document.getElementById('turno');

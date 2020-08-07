@@ -1,15 +1,15 @@
 var SegundoParcial;
 (function (SegundoParcial) {
     var Persona = /** @class */ (function () {
-        function Persona(id, nombre, apellido) {
-            this.id = id;
+        function Persona(nombre, apellido, edad) {
             this.nombre = nombre;
             this.apellido = apellido;
+            this.edad = edad;
         }
-        Persona.prototype.toJson = function () {
-            return "{id: " + this.id + "," +
-                "nombre: " + this.nombre + "," +
-                "apellido: " + this.apellido + "}";
+        Persona.prototype.PersonaToJson = function () {
+            return "{nombre: " + this.nombre + "," +
+                "apellido: " + this.apellido + "," +
+                "edad: " + this.edad + "}";
         };
         return Persona;
     }());

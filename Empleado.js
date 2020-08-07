@@ -13,19 +13,19 @@ var __extends = (this && this.__extends) || (function () {
 })();
 var SegundoParcial;
 (function (SegundoParcial) {
-    var Cliente = /** @class */ (function (_super) {
-        __extends(Cliente, _super);
-        function Cliente(id, nombre, apellido, edad, sexo) {
-            var _this = _super.call(this, id, nombre, apellido) || this;
-            _this.edad = edad;
-            _this.sexo = sexo;
+    var Empleado = /** @class */ (function (_super) {
+        __extends(Empleado, _super);
+        function Empleado(nombre, apellido, edad, legajo, horario) {
+            var _this = _super.call(this, nombre, apellido, edad) || this;
+            _this.legajo = legajo;
+            _this.horario = horario;
             return _this;
         }
-        Cliente.prototype.toJson = function () {
-            var jsonBase = _super.prototype.toJson.call(this);
+        Empleado.prototype.toJson = function () {
+            var jsonBase = _super.prototype.PersonaToJson.call(this);
             return jsonBase;
         };
-        return Cliente;
+        return Empleado;
     }(SegundoParcial.Persona));
-    SegundoParcial.Cliente = Cliente;
+    SegundoParcial.Empleado = Empleado;
 })(SegundoParcial || (SegundoParcial = {}));

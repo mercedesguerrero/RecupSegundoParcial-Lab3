@@ -1,12 +1,7 @@
 namespace SegundoParcial{
 
-    var clientesList:Array<Cliente> = new Array<Cliente>();
-    var atributos:string[] = ['id','nombre','apellido', 'edad', 'genero'];
-
-    let divFrm;
-    let frm;
-    let divInfo;
-    let btnCancelar;
+    var empleadosList:Array<Empleado> = new Array<Empleado>();
+    var atributos:string[] = ['nombre','apellido', 'edad', 'legajo', 'horario'];
 
 
     window.onload= function inicializar(){
@@ -15,10 +10,10 @@ namespace SegundoParcial{
         // btn.onclick= login;
         document.getElementById('loadingDiv').style.display = 'none';
 
-        var cliente1:Cliente = new Cliente(1,"Mercedes", "Juarez", 35, sexo.femenino);
-        var cliente2:Cliente = new Cliente(2,"Leandro", "Holmberg", 28, sexo.masculino);
-        clientesList.push(cliente1);
-        clientesList.push(cliente2);
+        var empleado1:Empleado = new Empleado("Mercedes", "Juarez", 35, 1, "9-18");
+        var empleado2:Empleado = new Empleado("Leandro", "Holmberg", 28, 2, "8-17");
+        empleadosList.push(empleado1);
+        empleadosList.push(empleado2);
 
         // var btnAlta= 
         document.getElementById('btnAlta').addEventListener('click',crearFormulario);
@@ -81,7 +76,7 @@ namespace SegundoParcial{
         var tbody = document.createElement('tbody');
         tbody.id = 'bodyTabla';
 
-        clientesList.forEach(cliente => {
+        empleadosList.forEach(cliente => {
 
             var tr= crearFila(cliente);
 
@@ -180,7 +175,7 @@ namespace SegundoParcial{
         var listaFiltrada;
 
         if (valorSeleccionado == -1) {
-            listaFiltrada = clientesList;
+            listaFiltrada = empleadosList;
         }
         else {
             listaFiltrada = obtenerListaFiltradaPorSexo(valorSeleccionado);
@@ -190,7 +185,7 @@ namespace SegundoParcial{
 
     export function obtenerListaFiltradaPorSexo(valorSeleccionado){
 
-        var listaFiltrada:Array<Cliente> = clientesList.filter(function(cliente){
+        var listaFiltrada:Array<Cliente> = empleadosList.filter(function(cliente){
 
             if(cliente.sexo === valorSeleccionado){
                 return true;
@@ -231,7 +226,7 @@ namespace SegundoParcial{
     //Buscar el max id, sumarle 1 y retornarlo
     export function devuelveId() {
 
-        var MaxId = clientesList.reduce(function(previous, current){
+        var MaxId = empleadosList.reduce(function(previous, current){
 
             if(previous< current.id){
                 return current.id;
@@ -408,7 +403,7 @@ namespace SegundoParcial{
         
         var nuevaPersona:Cliente = new Cliente(id, inputs[1].value, inputs[2].value, inputs[3].value, parseInt(inputs[4].value));
         
-        clientesList.push(nuevaPersona);
+        empleadosList.push(nuevaPersona);
 
         actualizarTabla(nuevaPersona);
         removerObjetos();    
@@ -438,10 +433,10 @@ namespace SegundoParcial{
 
     function bajaPersona(id){
 
-        clientesList.splice(id,1);
+        empleadosList.splice(id,1);
         
         quitarFilas();
-        mostrarTablaFiltrada(clientesList);
+        mostrarTablaFiltrada(empleadosList);
     }
 
     function modificacionPersona(persona) 

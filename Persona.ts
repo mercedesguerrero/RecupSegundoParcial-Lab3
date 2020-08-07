@@ -2,22 +2,22 @@ namespace SegundoParcial{
 
     export class Persona{
 
-        public id:number;
         public nombre:string;
         public apellido:string; 
+        public edad:number;
 
-        constructor(id:number,nombre:string,apellido:string){
-            this.id= id;
+        constructor(nombre:string,apellido:string,edad:number){
             this.nombre= nombre;
             this.apellido= apellido;
+            this.edad= edad;
         } 
     
     
-        toJson():string {
+        PersonaToJson():string {
 
-            return "{id: " + this.id + "," + 
-                    "nombre: " + this.nombre + "," +
-                    "apellido: " + this.apellido + "}";
+            return "{nombre: " + this.nombre + "," +
+                    "apellido: " + this.apellido + "," +
+                    "edad: " + this.edad + "}";
         }
     }
 
