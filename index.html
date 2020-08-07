@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="./Persona.js"></script>
+    <script src="./Sexo.js"></script>
+    <script src="./Cliente.js"></script>
+    <script src="./FuncionesHTML.js"></script>
+    <link rel="stylesheet" href="./hojaStyle.css">
+    <title>Segundo parcial</title>
+</head>
+<body>
+    <header>
+
+        <h1>Lista de Personas</h1>
+
+    </header>
+
+    <nav>
+        <input type="button" value="Agregar" id="btnAlta" class="button">
+    </nav>
+
+    <nav>
+        <input type="button" value="Borrar datos" id="btnBorrarDatos" class="button btnCancelar">
+    </nav>
+
+    <nav>
+        <input type="text" id="typeTextPromedio" class="inputText">
+        <input type="button" value="Promedio" id="btnPromedio" class="button btnGuardar">
+    </nav>
+
+    <nav>
+        <label for="selectFiltro">Filtrar por</label>
+        <select name="selectFiltro" id="filtro" class="select" placeholder="Seleccione una opción">
+            <option value="ninguno"></option>
+            <option value="femenino">Femenino</option>
+            <option value="masculino">Masculino</option>
+        </select>
+    </nav>
+
+    <nav>
+        <input type="checkbox" id='Check-id' class="check-col" checked>
+        <label for="Check-id">Id</label>
+
+        <input type="checkbox" id='Check-nombre' class="check-col" checked>
+        <label for="Check-nombre">Nombre</label>
+
+        <input type="checkbox" id='Check-apellido' class="check-col" checked>
+        <label for="Check-apellido">Apellido</label>
+
+        <input type="checkbox" id='Check-edad'class="check-col" checked>
+        <label for="Check-edad">Edad</label>
+
+        <input type="checkbox" id='Check-genero'class="check-col" checked>
+        <label for="Check-genero">Género</label>
+    </nav>
+
+    <div id="loadingDiv" class="loading">
+        <div id="spinner">
+            <img src="images/spinner.svg" alt="" width="100" height="100">
+        </div>
+    </div>  
+   
+
+
+</body>
+</html>
