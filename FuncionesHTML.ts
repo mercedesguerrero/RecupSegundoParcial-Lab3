@@ -2,6 +2,8 @@ namespace SegundoParcial{
 
     var empleadosList:Array<Empleado> = new Array<Empleado>();
     var atributos:string[] = ['nombre','apellido', 'edad', 'legajo', 'horario'];
+    var acciones:string[] = ['modificar','eliminar'];
+    var horarios:string[] = ['8-17','9-18','10-19'];
 
 
     window.onload= function inicializar(){
@@ -60,10 +62,16 @@ namespace SegundoParcial{
             var th = document.createElement('th');
             th.appendChild(document.createTextNode(atributo));
             header.appendChild(th);
-            th.classList.add('col-'+atributo);
+            //th.classList.add('col-'+atributo);
             // if(atributo=== "id"){
             //     th.style.display = 'none';
             // }
+        });
+
+        acciones.forEach(accion => {
+            var th = document.createElement('th');
+            th.appendChild(document.createTextNode(accion));
+            header.appendChild(th);
         });
         
         theader.appendChild(header);
@@ -76,9 +84,9 @@ namespace SegundoParcial{
         var tbody = document.createElement('tbody');
         tbody.id = 'bodyTabla';
 
-        empleadosList.forEach(cliente => {
+        empleadosList.forEach(empleado => {
 
-            var tr= crearFila(cliente);
+            var tr= crearFila(empleado);
 
             tbody.appendChild(tr);     
         });
@@ -87,10 +95,10 @@ namespace SegundoParcial{
         return tabla;
     }
 
-    export function actualizarTabla(cliente){
+    export function actualizarTabla(empleado){
 
         var tbody= document.getElementById('bodyTabla');
-        let fila= crearFila(cliente);
+        let fila= crearFila(empleado);
 
         tbody.appendChild(fila);
     }
@@ -105,7 +113,7 @@ namespace SegundoParcial{
         }
     }
 
-    export function crearFila(cliente)
+    export function crearFila(empleado)
     {
         var tr = document.createElement('tr');
 
@@ -113,18 +121,36 @@ namespace SegundoParcial{
             var td = document.createElement('td');
             td.classList.add('col-'+atributo);
 
-            if(atributo == 'genero'){
+            td.appendChild(document.createTextNode(empleado[atributo]));
+        
+            tr.appendChild(td);
+        });
 
-                td.appendChild(document.createTextNode(sexo[cliente.sexo]));
+        acciones.forEach(accion => {
+            var td = document.createElement('td');
+            //td.classList.add('col-'+accion);
 
-            }else{
-                td.appendChild(document.createTextNode(cliente[atributo]));
+            var Boton = document.createElement('button');
+            Boton.type = 'button';
+            Boton.classList.add('btnForm');
+
+            if(accion== "Modificar"){
+
+                Boton.innerText = 'Modificar';
+
+            }else if(accion== "Eliminar"){
+                
+                Boton.innerText = 'Eliminar';
+                Boton.classList.add('btnCancelar');
             }
+
+            Boton.addEventListener('click',crearFormulario);
+
+            td.appendChild(Boton);
             tr.appendChild(td);
         });
         
         tr.id = 'tableRow';
-        tr.addEventListener('click',crearFormulario);
         
         return tr;
     }
@@ -271,11 +297,14 @@ namespace SegundoParcial{
 
             var tdInput = document.createElement('td');
 
-            if(atributos[i]== 'id'){
+            if(atributos[i]== 'legajo'){
 
                 tdInput.appendChild(crearInputText(true));
                 
-            }else if(atributos[i]== 'genero'){
+            }else if(atributos[i]== 'edad'){
+                tdInput.appendChild(crearInputNumber());
+
+            }else if(atributos[i]== 'horario'){
                 tdInput.appendChild(crearSelect());
 
             }else{
@@ -308,25 +337,34 @@ namespace SegundoParcial{
         return input;
     }
 
+    function crearInputNumber()
+    {
+        var input;
+        input = document.createElement('input');
+        input.type = 'number';
+        input.className = 'inputForm';
+
+        return input;
+    }
+
     function crearSelect()
     { 
-        var generoSelect = document.createElement('select');
-        generoSelect.className = 'inputForm';
-        generoSelect.id = 'generoSelect';
+        var horarioSelect = document.createElement('select');
+        horarioSelect.className = 'inputForm';
+        horarioSelect.id = 'horarioSelect';
 
-        for(let item in sexo) {
+        horarios.forEach(horario => {
 
-            if (isNaN(Number(item))){
-                var option = document.createElement('option');
+            var option = document.createElement('option');
                 
-                option.innerText = item;
-                option.value= sexo[item];
-                
-                generoSelect.appendChild(option);
-            }
-        }
+            option.innerText = horario;
+            option.value= horario;
+            
+            horarioSelect.appendChild(option);
+            
+        });
         
-        return generoSelect;
+        return horarioSelect;
     }
 
     function agregarBotonEnviar(tabla,caller)

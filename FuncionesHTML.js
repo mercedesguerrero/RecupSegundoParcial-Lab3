@@ -2,6 +2,8 @@ var SegundoParcial;
 (function (SegundoParcial) {
     var empleadosList = new Array();
     var atributos = ['nombre', 'apellido', 'edad', 'legajo', 'horario'];
+    var acciones = ['modificar', 'eliminar'];
+    var horarios = ['8-17', '9-18', '10-19'];
     window.onload = function inicializar() {
         setTimeout(function () {
             // var btn= document.getElementById("btnEnviar");
@@ -46,10 +48,15 @@ var SegundoParcial;
             var th = document.createElement('th');
             th.appendChild(document.createTextNode(atributo));
             header.appendChild(th);
-            th.classList.add('col-' + atributo);
+            //th.classList.add('col-'+atributo);
             // if(atributo=== "id"){
             //     th.style.display = 'none';
             // }
+        });
+        acciones.forEach(function (accion) {
+            var th = document.createElement('th');
+            th.appendChild(document.createTextNode(accion));
+            header.appendChild(th);
         });
         theader.appendChild(header);
         tabla.appendChild(theader);
@@ -59,17 +66,17 @@ var SegundoParcial;
     function crearBody(tabla) {
         var tbody = document.createElement('tbody');
         tbody.id = 'bodyTabla';
-        empleadosList.forEach(function (cliente) {
-            var tr = crearFila(cliente);
+        empleadosList.forEach(function (empleado) {
+            var tr = crearFila(empleado);
             tbody.appendChild(tr);
         });
         tabla.appendChild(tbody);
         return tabla;
     }
     SegundoParcial.crearBody = crearBody;
-    function actualizarTabla(cliente) {
+    function actualizarTabla(empleado) {
         var tbody = document.getElementById('bodyTabla');
-        var fila = crearFila(cliente);
+        var fila = crearFila(empleado);
         tbody.appendChild(fila);
     }
     SegundoParcial.actualizarTabla = actualizarTabla;
@@ -81,21 +88,32 @@ var SegundoParcial;
         }
     }
     SegundoParcial.quitarFilas = quitarFilas;
-    function crearFila(cliente) {
+    function crearFila(empleado) {
         var tr = document.createElement('tr');
         atributos.forEach(function (atributo) {
             var td = document.createElement('td');
             td.classList.add('col-' + atributo);
-            if (atributo == 'genero') {
-                td.appendChild(document.createTextNode(sexo[cliente.sexo]));
+            td.appendChild(document.createTextNode(empleado[atributo]));
+            tr.appendChild(td);
+        });
+        acciones.forEach(function (accion) {
+            var td = document.createElement('td');
+            //td.classList.add('col-'+accion);
+            var Boton = document.createElement('button');
+            Boton.type = 'button';
+            Boton.classList.add('btnForm');
+            if (accion == "Modificar") {
+                Boton.innerText = 'Modificar';
             }
-            else {
-                td.appendChild(document.createTextNode(cliente[atributo]));
+            else if (accion == "Eliminar") {
+                Boton.innerText = 'Eliminar';
+                Boton.classList.add('btnCancelar');
             }
+            Boton.addEventListener('click', crearFormulario);
+            td.appendChild(Boton);
             tr.appendChild(td);
         });
         tr.id = 'tableRow';
-        tr.addEventListener('click', crearFormulario);
         return tr;
     }
     SegundoParcial.crearFila = crearFila;
@@ -204,10 +222,13 @@ var SegundoParcial;
             td.appendChild(label);
             tr.appendChild(td);
             var tdInput = document.createElement('td');
-            if (atributos[i] == 'id') {
+            if (atributos[i] == 'legajo') {
                 tdInput.appendChild(crearInputText(true));
             }
-            else if (atributos[i] == 'genero') {
+            else if (atributos[i] == 'edad') {
+                tdInput.appendChild(crearInputNumber());
+            }
+            else if (atributos[i] == 'horario') {
                 tdInput.appendChild(crearSelect());
             }
             else {
@@ -231,19 +252,24 @@ var SegundoParcial;
         }
         return input;
     }
+    function crearInputNumber() {
+        var input;
+        input = document.createElement('input');
+        input.type = 'number';
+        input.className = 'inputForm';
+        return input;
+    }
     function crearSelect() {
-        var generoSelect = document.createElement('select');
-        generoSelect.className = 'inputForm';
-        generoSelect.id = 'generoSelect';
-        for (var item in sexo) {
-            if (isNaN(Number(item))) {
-                var option = document.createElement('option');
-                option.innerText = item;
-                option.value = sexo[item];
-                generoSelect.appendChild(option);
-            }
-        }
-        return generoSelect;
+        var horarioSelect = document.createElement('select');
+        horarioSelect.className = 'inputForm';
+        horarioSelect.id = 'horarioSelect';
+        horarios.forEach(function (horario) {
+            var option = document.createElement('option');
+            option.innerText = horario;
+            option.value = horario;
+            horarioSelect.appendChild(option);
+        });
+        return horarioSelect;
     }
     function agregarBotonEnviar(tabla, caller) {
         if (caller.id == 'btnAlta') {
