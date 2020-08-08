@@ -152,7 +152,7 @@ var SegundoParcial;
             Manejadora.mostrarTablaFiltrada(listaFiltrada);
         };
         Manejadora.obtenerListaFiltrada = function () {
-            var valorSeleccionado = Manejadora.obtenerValorSelect();
+            var valorSeleccionado = Manejadora.obtenerValorSelect('filtro');
             var listaFiltrada;
             if (valorSeleccionado == -1) {
                 listaFiltrada = empleadosList;
@@ -351,24 +351,7 @@ var SegundoParcial;
             Manejadora.quitarFilas();
             Manejadora.mostrarTabla(empleadosList);
         };
-        Manejadora.modificacionPersona = function (persona) {
-            var turno = document.getElementById('turno');
-            // if (turno.checked == true){
-            //     turno=true;
-            // }else{
-            //     turno=false;
-            // }
-            // var casa;
-            // if (document.getElementById('Mañana').checked) {
-            //     casa = "Mañana";
-            // }
-            // else if (document.getElementById('Tarde').checked) {
-            //     casa = "Tarde";
-            // }
-            // var inputs = document.getElementsByClassName('inputForm');
-            // var persona = new Persona(inputs[1].value,inputs[2].value,inputs[3].value,casa, turno);
-            // persona.id = inputs[0].value;
-            //modificarPersona(persona);
+        Manejadora.modificacionPersona = function () {
             Manejadora.removerObjetos();
         };
         return Manejadora;
