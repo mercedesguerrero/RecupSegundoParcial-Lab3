@@ -48,6 +48,15 @@ namespace SegundoParcial{
 
         }
 
+        public static mostrarTabla(empleadosList:Array<Empleado>) {
+
+            empleadosList.forEach(empleado=>{
+
+                Manejadora.actualizarTabla(empleado);
+            });
+
+        }
+
         public static crearTabla() 
         {
             var tabla = document.createElement('table');
@@ -241,9 +250,9 @@ namespace SegundoParcial{
                 // var resultado = function () {
                 //hacer el acumulado dividido el total
             
-                var edadPromedio= lista.reduce(function(acumulado, cliente){
+                var edadPromedio= lista.reduce(function(acumulado, empleado){
                 
-                    return acumulado+= cliente.edad;
+                    return acumulado+= empleado.edad;
 
                 },0)/lista.length;
 
@@ -472,17 +481,22 @@ namespace SegundoParcial{
 
             if(confirm("¿Desea eliminar al empleado con legajo numero " + legajoEmpleado +"?"))
             {
-                Manejadora.bajaPersona(legajoEmpleado);
-                Manejadora.removerObjetos();        
+                Manejadora.bajaPersona(legajoEmpleado);        
             }
         }
 
         public static bajaPersona(legajo){
 
-            empleadosList.splice(legajo,1);
+            let index= empleadosList.findIndex(function(empleado){
+
+                return empleado.legajo == legajo;
+
+            });
+
+            empleadosList.splice(index,1);
             
             Manejadora.quitarFilas();
-            Manejadora.mostrarTablaFiltrada(empleadosList);
+            Manejadora.mostrarTabla(empleadosList);
         }
 
         public static modificacionPersona(persona) 

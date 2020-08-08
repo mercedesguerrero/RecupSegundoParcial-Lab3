@@ -35,6 +35,11 @@ var SegundoParcial;
                 Manejadora.actualizarTabla(cliente);
             });
         };
+        Manejadora.mostrarTabla = function (empleadosList) {
+            empleadosList.forEach(function (empleado) {
+                Manejadora.actualizarTabla(empleado);
+            });
+        };
         Manejadora.crearTabla = function () {
             var tabla = document.createElement('table');
             tabla.id = "tablaLista";
@@ -174,8 +179,8 @@ var SegundoParcial;
                 var lista = Manejadora.obtenerListaFiltrada();
                 // var resultado = function () {
                 //hacer el acumulado dividido el total
-                var edadPromedio = lista.reduce(function (acumulado, cliente) {
-                    return acumulado += cliente.edad;
+                var edadPromedio = lista.reduce(function (acumulado, empleado) {
+                    return acumulado += empleado.edad;
                 }, 0) / lista.length;
                 resolve(edadPromedio);
             }).then(function (response) {
@@ -336,13 +341,15 @@ var SegundoParcial;
             var legajoEmpleado = this.value;
             if (confirm("¿Desea eliminar al empleado con legajo numero " + legajoEmpleado + "?")) {
                 Manejadora.bajaPersona(legajoEmpleado);
-                Manejadora.removerObjetos();
             }
         };
         Manejadora.bajaPersona = function (legajo) {
-            empleadosList.splice(legajo, 1);
+            var index = empleadosList.findIndex(function (empleado) {
+                return empleado.legajo == legajo;
+            });
+            empleadosList.splice(index, 1);
             Manejadora.quitarFilas();
-            Manejadora.mostrarTablaFiltrada(empleadosList);
+            Manejadora.mostrarTabla(empleadosList);
         };
         Manejadora.modificacionPersona = function (persona) {
             var turno = document.getElementById('turno');
