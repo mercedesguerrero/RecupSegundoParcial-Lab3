@@ -3,14 +3,14 @@ var SegundoParcial;
     var empleadosList = new Array();
     var atributos = ['nombre', 'apellido', 'edad', 'legajo', 'horario'];
     var acciones = ['modificar', 'eliminar'];
-    var horarios = ['8-17', '9-18', '10-19'];
+    var horarios = ['8 a 17', '9 a 18', '10 a 19'];
     window.onload = function inicializar() {
         setTimeout(function () {
             // var btn= document.getElementById("btnEnviar");
             // btn.onclick= login;
             document.getElementById('loadingDiv').style.display = 'none';
-            var empleado1 = new SegundoParcial.Empleado("Mercedes", "Juarez", 35, 1, "9-18");
-            var empleado2 = new SegundoParcial.Empleado("Leandro", "Holmberg", 28, 2, "8-17");
+            var empleado1 = new SegundoParcial.Empleado("Mercedes", "Juarez", 35, 1, "9 a 18");
+            var empleado2 = new SegundoParcial.Empleado("Leandro", "Holmberg", 28, 2, "8 a 17");
             empleadosList.push(empleado1);
             empleadosList.push(empleado2);
             // var btnAlta= 
@@ -102,11 +102,13 @@ var SegundoParcial;
             var Boton = document.createElement('button');
             Boton.type = 'button';
             Boton.classList.add('btnForm');
-            if (accion == "Modificar") {
+            if (accion == "modificar") {
                 Boton.innerText = 'Modificar';
+                Boton.id = 'ModButton';
             }
-            else if (accion == "Eliminar") {
+            else if (accion == "eliminar") {
                 Boton.innerText = 'Eliminar';
+                Boton.id = 'DelButton';
                 Boton.classList.add('btnCancelar');
             }
             Boton.addEventListener('click', crearFormulario);
@@ -129,8 +131,8 @@ var SegundoParcial;
         }
     }
     SegundoParcial.mostrarColumnas = mostrarColumnas;
-    function obtenerValorSelect() {
-        var selectHTML = document.getElementById('filtro');
+    function obtenerValorSelect(idElemento) {
+        var selectHTML = document.getElementById(idElemento);
         var index;
         index = selectHTML.selectedIndex;
         var selectedValue = selectHTML.options[index].value;
@@ -138,7 +140,7 @@ var SegundoParcial;
             return -1;
         }
         else {
-            return sexo[selectedValue];
+            return selectedValue;
         }
     }
     function filtrar() {
@@ -189,8 +191,8 @@ var SegundoParcial;
     //Buscar el max id, sumarle 1 y retornarlo
     function devuelveId() {
         var MaxId = empleadosList.reduce(function (previous, current) {
-            if (previous < current.id) {
-                return current.id;
+            if (previous < current.legajo) {
+                return current.legajo;
             }
             else {
                 return previous;
@@ -288,8 +290,8 @@ var SegundoParcial;
         }
     }
     function agregarBotonesRow(tabla, caller) {
-        if (caller.id == 'tableRow') {
-            var botones = ["Eliminar", "Modificar", "Cancelar"];
+        if (caller.id == 'ModButton') {
+            var botones = ["Modificar", "Cancelar"];
             var tr = document.createElement('tr');
             for (var i = 0; i < botones.length; i++) {
                 var boton = document.createElement('button');
@@ -297,10 +299,28 @@ var SegundoParcial;
                 boton.type = 'button';
                 boton.className = 'btnForm';
                 if (i == 0) {
-                    boton.addEventListener('click', eliminacionPersona);
-                }
-                else if (i == 1) {
                     boton.addEventListener('click', modificacionPersona);
+                }
+                else {
+                    boton.addEventListener('click', cerrarForm);
+                }
+                var td = document.createElement('td');
+                td.appendChild(boton);
+                tr.appendChild(td);
+            }
+            tabla.appendChild(tr);
+        }
+        else if (caller.id == 'DelButton') {
+            var botones = ["Eliminar", "Cancelar"];
+            var tr = document.createElement('tr');
+            for (var i = 0; i < botones.length; i++) {
+                var boton = document.createElement('button');
+                boton.innerText = botones[i];
+                boton.type = 'button';
+                boton.className = 'btnForm';
+                if (i == 0) {
+                    boton.classList.add('btnCancelar');
+                    boton.addEventListener('click', eliminacionPersona);
                 }
                 else {
                     boton.addEventListener('click', cerrarForm);
@@ -325,8 +345,9 @@ var SegundoParcial;
     }
     function altaPersona() {
         var inputs = document.getElementsByClassName('inputForm');
-        var id = devuelveId();
-        var nuevaPersona = new Cliente(id, inputs[1].value, inputs[2].value, inputs[3].value, parseInt(inputs[4].value));
+        var legajo = devuelveId();
+        var horario = obtenerValorSelect('horarioSelect');
+        var nuevaPersona = new SegundoParcial.Empleado(inputs[0].value, inputs[1].value, parseInt(inputs[2].value), legajo, horario);
         empleadosList.push(nuevaPersona);
         actualizarTabla(nuevaPersona);
         removerObjetos();

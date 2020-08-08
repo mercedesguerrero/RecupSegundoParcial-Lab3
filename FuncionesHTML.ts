@@ -3,7 +3,7 @@ namespace SegundoParcial{
     var empleadosList:Array<Empleado> = new Array<Empleado>();
     var atributos:string[] = ['nombre','apellido', 'edad', 'legajo', 'horario'];
     var acciones:string[] = ['modificar','eliminar'];
-    var horarios:string[] = ['8-17','9-18','10-19'];
+    var horarios:string[] = ['8 a 17','9 a 18','10 a 19'];
 
 
     window.onload= function inicializar(){
@@ -12,8 +12,8 @@ namespace SegundoParcial{
         // btn.onclick= login;
         document.getElementById('loadingDiv').style.display = 'none';
 
-        var empleado1:Empleado = new Empleado("Mercedes", "Juarez", 35, 1, "9-18");
-        var empleado2:Empleado = new Empleado("Leandro", "Holmberg", 28, 2, "8-17");
+        var empleado1:Empleado = new Empleado("Mercedes", "Juarez", 35, 1, "9 a 18");
+        var empleado2:Empleado = new Empleado("Leandro", "Holmberg", 28, 2, "8 a 17");
         empleadosList.push(empleado1);
         empleadosList.push(empleado2);
 
@@ -134,13 +134,15 @@ namespace SegundoParcial{
             Boton.type = 'button';
             Boton.classList.add('btnForm');
 
-            if(accion== "Modificar"){
+            if(accion== "modificar"){
 
                 Boton.innerText = 'Modificar';
+                Boton.id= 'ModButton'
 
-            }else if(accion== "Eliminar"){
+            }else if(accion== "eliminar"){
                 
                 Boton.innerText = 'Eliminar';
+                Boton.id= 'DelButton'
                 Boton.classList.add('btnCancelar');
             }
 
@@ -170,10 +172,10 @@ namespace SegundoParcial{
         
     }
 
-    function obtenerValorSelect()
+    function obtenerValorSelect(idElemento)
     {
         
-        var selectHTML = document.getElementById('filtro');
+        var selectHTML = document.getElementById(idElemento);
         var index;
 
         index = selectHTML.selectedIndex;
@@ -183,7 +185,7 @@ namespace SegundoParcial{
             return -1;
         }else{
 
-            return sexo[selectedValue];
+            return selectedValue;
         }
     }
 
@@ -254,8 +256,8 @@ namespace SegundoParcial{
 
         var MaxId = empleadosList.reduce(function(previous, current){
 
-            if(previous< current.id){
-                return current.id;
+            if(previous< current.legajo){
+                return current.legajo;
             }else{
                 return previous;
             }
@@ -388,9 +390,9 @@ namespace SegundoParcial{
 
     function agregarBotonesRow(tabla, caller)
     {
-        if(caller.id == 'tableRow')
+        if(caller.id == 'ModButton')
         {
-            var botones = ["Eliminar","Modificar","Cancelar"];
+            var botones = ["Modificar","Cancelar"];
             var tr = document.createElement('tr');
 
             for(var i = 0 ; i<botones.length;i++)
@@ -400,10 +402,6 @@ namespace SegundoParcial{
                 boton.type = 'button';
                 boton.className = 'btnForm';
                 if(i == 0)
-                {
-                    boton.addEventListener('click',eliminacionPersona);
-                }
-                else if(i==1)
                 {
                     boton.addEventListener('click',modificacionPersona);
                 }
@@ -417,6 +415,33 @@ namespace SegundoParcial{
             }
 
             tabla.appendChild(tr);
+        }else if(caller.id == 'DelButton'){
+
+            var botones = ["Eliminar","Cancelar"];
+            var tr = document.createElement('tr');
+
+            for(var i = 0 ; i<botones.length;i++)
+            {
+                var boton = document.createElement('button');
+                boton.innerText = botones[i];
+                boton.type = 'button';
+                boton.className = 'btnForm';
+                if(i == 0)
+                {
+                    boton.classList.add('btnCancelar');
+                    boton.addEventListener('click',eliminacionPersona);
+                }
+                else
+                {
+                    boton.addEventListener('click',cerrarForm);
+                }
+                var td = document.createElement('td');
+                td.appendChild(boton);
+                tr.appendChild(td);
+            }
+
+            tabla.appendChild(tr);
+
         }
     }
 
@@ -437,9 +462,10 @@ namespace SegundoParcial{
     {
         var inputs = document.getElementsByClassName('inputForm');
 
-        let id= devuelveId();
+        let legajo= devuelveId();
+        let horario= obtenerValorSelect('horarioSelect');
         
-        var nuevaPersona:Cliente = new Cliente(id, inputs[1].value, inputs[2].value, inputs[3].value, parseInt(inputs[4].value));
+        var nuevaPersona:Empleado = new Empleado(inputs[0].value, inputs[1].value, parseInt(inputs[2].value), legajo, horario);
         
         empleadosList.push(nuevaPersona);
 
