@@ -24,11 +24,7 @@ namespace SegundoParcial{
             document.getElementById('filtro').addEventListener('change',Manejadora.filtrar);
             document.getElementById('btnPromedio').addEventListener('click',Manejadora.calcularPromedio);
             document.getElementById('btnBorrarDatos').addEventListener('click',Manejadora.quitarFilas);
-
-            const checkboxes= document.getElementsByClassName("check-col");
-            for(let checkbox of checkboxes){
-                checkbox.addEventListener('change', Manejadora.mostrarColumnas);
-            }
+            document.getElementById("Check-nombre").addEventListener('change', Manejadora.mostrarColumnas);
 
             Manejadora.crearTabla();
             
@@ -142,7 +138,7 @@ namespace SegundoParcial{
 
             acciones.forEach(accion => {
                 var td = document.createElement('td');
-                //td.classList.add('col-'+accion);
+                td.classList.add('col-'+accion);
 
                 var Boton = document.createElement('button');
                 Boton.type = 'button';
@@ -175,15 +171,20 @@ namespace SegundoParcial{
         //el this es el input checkbox
         public static mostrarColumnas(this: HTMLInputElement) {
 
-            const colName: string= this.id.split("-")[1]; 
+            var lista = Manejadora.obtenerListaFiltrada();
 
-            //Interpolación
-            const campos= document.getElementsByClassName(`col-${colName}`);
+            if(this.checked){
 
-            for(let campo of campos){
-                //Expresion ternaria
-                campo.style.display = this.checked ? "" : "none";
+                var arrayNombres= lista.map(function(item){
+
+                    return "{nombre: " + item.nombre + "," +
+                    "apellido: " + item.apellido + "}"; 
+                  });
+    
+                Manejadora.mostrarTablaFiltrada(arrayNombres);
+
             }
+            
             
         }
 

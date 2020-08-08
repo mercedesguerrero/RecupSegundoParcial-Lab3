@@ -18,11 +18,7 @@ var SegundoParcial;
             document.getElementById('filtro').addEventListener('change', Manejadora.filtrar);
             document.getElementById('btnPromedio').addEventListener('click', Manejadora.calcularPromedio);
             document.getElementById('btnBorrarDatos').addEventListener('click', Manejadora.quitarFilas);
-            var checkboxes = document.getElementsByClassName("check-col");
-            for (var _i = 0, checkboxes_1 = checkboxes; _i < checkboxes_1.length; _i++) {
-                var checkbox = checkboxes_1[_i];
-                checkbox.addEventListener('change', Manejadora.mostrarColumnas);
-            }
+            document.getElementById("Check-nombre").addEventListener('change', Manejadora.mostrarColumnas);
             Manejadora.crearTabla();
         }, 2000);
     };
@@ -101,7 +97,7 @@ var SegundoParcial;
             });
             acciones.forEach(function (accion) {
                 var td = document.createElement('td');
-                //td.classList.add('col-'+accion);
+                td.classList.add('col-' + accion);
                 var Boton = document.createElement('button');
                 Boton.type = 'button';
                 Boton.classList.add('btnForm');
@@ -125,13 +121,13 @@ var SegundoParcial;
         };
         //el this es el input checkbox
         Manejadora.mostrarColumnas = function () {
-            var colName = this.id.split("-")[1];
-            //Interpolación
-            var campos = document.getElementsByClassName("col-" + colName);
-            for (var _i = 0, campos_1 = campos; _i < campos_1.length; _i++) {
-                var campo = campos_1[_i];
-                //Expresion ternaria
-                campo.style.display = this.checked ? "" : "none";
+            var lista = Manejadora.obtenerListaFiltrada();
+            if (this.checked) {
+                var arrayNombres = lista.map(function (item) {
+                    return "{nombre: " + item.nombre + "," +
+                        "apellido: " + item.apellido + "}";
+                });
+                Manejadora.mostrarTablaFiltrada(arrayNombres);
             }
         };
         Manejadora.obtenerValorSelect = function (idElemento) {
